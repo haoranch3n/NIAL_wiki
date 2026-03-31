@@ -1,0 +1,474 @@
+<table style="border-left: 4.0px solid rgb(0,82,204);background-color: rgb(222,235,255);border-collapse: collapse;">
+<tbody><tr>
+<td style="padding: 16.0px;border: none;">
+<span style="font-size: 16.0px;"><strong>&#x1F4CC; Page purpose:</strong> Get any DNB member from zero to productive with Cursor in under 30 minutes.</span><br/><br/>
+<strong>Last verified:</strong> March 30, 2026<br/><strong>Cursor version:</strong> 2.x<br/><strong>Maintainer:</strong> <a href="mailto:Haoran.Chen@stjude.org">Haoran Chen</a> — DNB
+</td>
+</tr>
+</tbody></table>
+<p>&nbsp;</p>
+<ac:structured-macro ac:macro-id="ff1c943e-7aac-4349-8384-320d3c429065" ac:name="toc" ac:schema-version="1"><ac:parameter ac:name="maxLevel">3</ac:parameter><ac:parameter ac:name="style">square</ac:parameter></ac:structured-macro>
+<p>&nbsp;</p>
+<hr/>
+<h1>1. What Is Cursor?</h1>
+<p><a href="https://www.cursor.com/">Cursor</a> is an AI-assisted code editor based on VS Code. It helps you write, edit, and understand code using natural language. You can:</p>
+<ul>
+<li>Ask it to make code changes across one or many files</li>
+<li>Explain files, functions, or how a project works</li>
+<li>Generate scripts or starter code</li>
+<li>Get help with command-line tasks using the built-in terminal agent</li>
+</ul>
+<hr/>
+<h1>2. Setup &amp; Access</h1>
+<p>Cursor is available as a <strong>desktop app</strong> (full GUI) and a <strong>CLI agent</strong> (terminal only). Which one you can use depends on your environment:</p>
+<table>
+<thead>
+<tr>
+<th>Environment</th>
+<th>App (GUI)</th>
+<th>CLI (terminal agent)</th>
+<th>Storage Access</th>
+<th>Workload</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Local</strong></td>
+<td>&#x2705;</td>
+<td>&#x2705;</td>
+<td>Z: drive</td>
+<td>Light / dev tasks</td>
+<td>Run the app or CLI locally. View images, tables, and plots directly in the editor.</td>
+</tr>
+<tr>
+<td><strong>DNB OnDemand</strong></td>
+<td>&#x2705;</td>
+<td>&#x2705;</td>
+<td>Z: drive</td>
+<td>Large interactive jobs</td>
+<td>Launch the app or open a terminal from the DNB OnDemand desktop session.</td>
+</tr>
+<tr>
+<td><strong>HPC OnDemand</strong></td>
+<td>&#x2705;</td>
+<td>&#x2705;</td>
+<td>Z: drive + scratch</td>
+<td>Large interactive jobs</td>
+<td>Launch the app or open a terminal from the HPC OnDemand desktop session.</td>
+</tr>
+<tr>
+<td><strong>HPC SSH</strong></td>
+<td>&#x274C;</td>
+<td>&#x2705;</td>
+<td>Z: drive + scratch</td>
+<td>Large batch jobs</td>
+<td>SSH to HPC, start an interactive session, then use the CLI.</td>
+</tr>
+</tbody>
+</table>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0002-0000-0000-000000000010" ac:name="panel" ac:schema-version="1"><ac:parameter ac:name="borderStyle">solid</ac:parameter><ac:parameter ac:name="borderColor">#FF991F</ac:parameter><ac:parameter ac:name="titleBGColor">#FFF7E6</ac:parameter><ac:parameter ac:name="bgColor">#FFFFFF</ac:parameter><ac:parameter ac:name="title">&#x26A0;&#xFE0F; Before you start</ac:parameter><ac:rich-text-body>
+<ul>
+<li><strong>Cloudflare authentication:</strong> All users must visit <a href="https://stjude.cloudflareaccess.com/cdn-cgi/access/refresh-identity?on_success=callback">this link</a> at least once to authenticate — even if you are on campus using a workstation or laptop.</li>
+<li><strong>Shared CLI install:</strong> Your home directory is shared between the St. Jude cluster and OnDemand, so you only need to install the CLI once — it works in both environments automatically.</li>
+<li><strong>HPC SSH &mdash; interactive session required:</strong> After logging in, start an <a href="https://wiki.stjude.org/display/HPCF/Introduction+to+the+HPCF+cluster#IntroductiontotheHPCFcluster-Interactivejobs">interactive session</a> with <code>hpcf_interactive</code> before launching the CLI agent. Use the agent for code development and light test runs — submit heavy compute jobs through <strong>LSF</strong> instead.</li>
+<li><strong>Local limitations:</strong> Running Cursor locally is best suited for light development tasks only — Z: drive access is significantly slower from local machines. For large data processing or heavy analysis, use OnDemand or HPC SSH instead.</li>
+</ul>
+</ac:rich-text-body></ac:structured-macro>
+<h2>2.1 Cursor Desktop App</h2>
+<p>Install Cursor on your local machine, then connect to remote servers via the built-in SSH remote feature.</p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0001-0001-0001-000000000001" ac:name="panel" ac:schema-version="1"><ac:parameter ac:name="title">Installation by platform</ac:parameter><ac:rich-text-body>
+<ac:structured-macro ac:macro-id="13f7223e-9f7e-4219-8d28-3b40e4ceee4c" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">macOS</ac:parameter><ac:rich-text-body>
+<ol>
+<li>Download the <code>.dmg</code> from <a href="https://www.cursor.com/">cursor.com</a>.</li>
+<li>Drag <strong>Cursor.app</strong> into <code>/Applications</code>.</li>
+<li>Launch and sign in (see Login section below).</li>
+</ol>
+</ac:rich-text-body></ac:structured-macro>
+<ac:structured-macro ac:macro-id="2c571bcf-b572-45fb-acf3-6e00b182652e" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">Windows</ac:parameter><ac:rich-text-body>
+<ol>
+<li>Download the <code>.exe</code> installer from <a href="https://www.cursor.com/">cursor.com</a>.</li>
+<li>Run the installer and follow the prompts.</li>
+<li>Launch and sign in.</li>
+</ol>
+</ac:rich-text-body></ac:structured-macro>
+<ac:structured-macro ac:macro-id="2b04299d-cf54-42da-bcd4-e69c88f5d78e" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">Linux</ac:parameter><ac:rich-text-body>
+<ol>
+<li>Download the <code>.AppImage</code> (x86 version) from <a href="https://www.cursor.com/">cursor.com</a>.</li>
+<li>Right-click the downloaded file &rarr; <strong>Properties</strong> &rarr; <strong>Permissions</strong> tab &rarr; set access to <strong>Read and Write</strong> and check <strong>&ldquo;Allow executing file as a program&rdquo;</strong>.</li>
+<li>Double-click the <code>.AppImage</code> to run it.</li>
+</ol>
+</ac:rich-text-body></ac:structured-macro>
+</ac:rich-text-body></ac:structured-macro>
+<ac:structured-macro ac:macro-id="84cd6eaa-c28b-4c90-a267-42a9feea1a5d" ac:name="tip" ac:schema-version="1"><ac:rich-text-body>
+<p>Cursor App uses the same settings as VS Code. If you already use VS Code, switching is seamless — your existing config imports automatically on first launch.</p>
+</ac:rich-text-body></ac:structured-macro>
+<h2>2.2 Cursor CLI (terminal agent)</h2>
+<p>The CLI lets you use Cursor's AI agent directly from any terminal — no GUI required. This is ideal for OnDemand sessions and HPC nodes.</p>
+<ac:structured-macro ac:macro-id="29d84f00-358c-46b1-b10b-40cc5c37cdd9" ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">bash</ac:parameter><ac:parameter ac:name="title">Install the CLI</ac:parameter><ac:plain-text-body><![CDATA[curl https://cursor.com/install -fsS | bash]]></ac:plain-text-body></ac:structured-macro>
+<p>Verify the installation:</p>
+<ac:structured-macro ac:macro-id="a411785c-9942-4b33-8469-460244494f89" ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">bash</ac:parameter><ac:plain-text-body><![CDATA[agent --version]]></ac:plain-text-body></ac:structured-macro>
+<ac:structured-macro ac:macro-id="34dca5b2-32c6-41a8-94c4-527ef91700ca" ac:name="tip" ac:schema-version="1"><ac:rich-text-body>
+<p>See <ac:link><ri:page ri:content-title="Cursor CLI - Authentication and Usage" ri:space-key="RC"></ri:page></ac:link> for the full CLI reference (interactive mode, print mode, sessions, CI integration).</p>
+</ac:rich-text-body></ac:structured-macro>
+<h2>2.3 Login &amp; Authentication</h2>
+<ol>
+<li>Launch Cursor (app or CLI).</li>
+<li>Click <strong>Sign In</strong> (or run <code>agent</code> in the terminal — it will open a browser auth flow).</li>
+<li>Enter your St. Jude email (<code>firstname.lastname@stjude.org</code>), then authenticate with <strong>St. Jude SSO</strong>.</li>
+<li>Once signed in, the status bar shows your account name and the active AI model.</li>
+</ol>
+<ac:structured-macro ac:macro-id="678b29ce-9c0e-4118-8c31-5e8dff1be5b0" ac:name="info" ac:schema-version="1"><ac:rich-text-body>
+<p><strong>Privacy mode</strong> is enabled by default. Your code is never stored or used for training by model providers. You can verify this under <em>Settings &gt; Team Settings &gt; Privacy</em>.</p>
+</ac:rich-text-body></ac:structured-macro>
+<hr/>
+<h1>3. Five-Minute Start</h1>
+<p>Follow this end-to-end example to go from zero to a finished figure — no existing code needed.</p>
+<ac:structured-macro ac:macro-id="1fc1753c-5cc1-4ab1-9204-4bf9c9d401fe" ac:name="panel" ac:schema-version="1"><ac:parameter ac:name="title">Scenario: Create a publication-ready figure from scratch using only natural language.</ac:parameter><ac:rich-text-body>
+<p><strong>Step 1 – Open a project folder</strong></p>
+<ul>
+<li><strong>Desktop app:</strong> Launch Cursor, then go to <em>File &gt; Open Folder</em> and select your project folder (or create an empty one).</li>
+<li><strong>CLI:</strong> Open a terminal, <code>cd</code> into your project folder, and run <code>agent</code>.</li>
+</ul>
+<p><strong>Step 2 – Ask Cursor to create a script that generates a figure</strong></p>
+<p>Press <code>Ctrl+L</code> to open Chat (or just type in the CLI). Try this prompt:</p>
+<ac:structured-macro ac:macro-id="34d6e8ad-3cec-4ddf-b381-e655ac5d4ffa" ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[Create a Python script called plot_demo.py that:
+- Generates sample gene expression data for 10 genes across 3 conditions
+- Plots a grouped bar chart with error bars
+- Uses a clean style suitable for a paper figure
+- Saves the figure as plot_demo.png]]></ac:plain-text-body></ac:structured-macro>
+<p>Cursor will write the entire script for you, install any missing packages, and run it. You'll see <code>plot_demo.png</code> appear in your folder.</p>
+<p><strong>Step 3 – Iterate with follow-up prompts</strong></p>
+<p>Not quite what you wanted? Just ask for changes in plain English:</p>
+<ac:structured-macro ac:macro-id="7ba8006d-e102-4914-b97d-7433ec249eaa" ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[Change the color palette to colorblind-friendly, increase the font size 
+to 14, and add a title and axis labels.]]></ac:plain-text-body></ac:structured-macro>
+<p>Cursor updates the script and re-runs it. Review the changes and keep iterating until you're happy with the result.</p>
+</ac:rich-text-body></ac:structured-macro>
+<hr/>
+<h1>4. Models &amp; Usage</h1>
+<p>Cursor acts as an <strong>orchestrator</strong> — you write prompts in natural language, and Cursor routes them to an AI model that generates the response, code edit, or terminal command. You choose the model; Cursor handles the rest.</p>
+<p>Each model differs in <strong>capability</strong>, <strong>speed</strong>, and <strong>token cost</strong>. Tokens are the units models use to measure input and output — longer prompts and larger files consume more tokens, and more capable models cost more tokens per request.</p>
+<ul>
+<li><strong>Recommendation:</strong> Just select <strong>Auto</strong> — it handles most tasks well by picking the right model for you.</li>
+<li><strong>Usage tracking:</strong> Monitor your token consumption under <em>Settings &gt; Usage</em> to stay within your team's allocation.</li>
+<li><strong>Need more control?</strong> If Auto struggles with a complex task, try selecting a specific model from the comparison table below.</li>
+</ul>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0003-0003-0003-000000000005" ac:name="panel" ac:schema-version="1"><ac:parameter ac:name="borderStyle">solid</ac:parameter><ac:parameter ac:name="borderColor">#6554C0</ac:parameter><ac:parameter ac:name="titleBGColor">#EAE6FF</ac:parameter><ac:parameter ac:name="bgColor">#FFFFFF</ac:parameter><ac:parameter ac:name="title">&#x1F50D; Model comparison table &amp; variations</ac:parameter><ac:rich-text-body>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0003-0003-0003-000000000004" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">Show details</ac:parameter><ac:rich-text-body>
+<p>Ratings are relative across models listed here. &#x1F9E0; = intelligence, &#x26A1; = speed, &#x1F4B2; = cost (more = pricier).</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Provider</th>
+<th>&#x1F9E0; Intelligence</th>
+<th>&#x26A1; Speed</th>
+<th>&#x1F4B2; Price</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Auto</strong> (recommended)</td>
+<td>Cursor</td>
+<td>&#x1F9E0;&#x1F9E0;&#x1F9E0;&#x1F9E0;</td>
+<td>&#x26A1;&#x26A1;&#x26A1;&#x26A1;</td>
+<td>&#x1F4B2;&#x1F4B2;</td>
+<td>All-purpose — Cursor picks the best model per task automatically</td>
+</tr>
+<tr>
+<td><strong>Composer 2</strong></td>
+<td>Cursor</td>
+<td>&#x1F9E0;&#x1F9E0;&#x1F9E0;</td>
+<td>&#x26A1;&#x26A1;&#x26A1;&#x26A1;&#x26A1;</td>
+<td>&#x1F4B2;</td>
+<td>Fast interactive coding, everyday edits — cheapest option</td>
+</tr>
+<tr>
+<td><strong>Claude Opus 4.6</strong></td>
+<td>Anthropic</td>
+<td>&#x1F9E0;&#x1F9E0;&#x1F9E0;&#x1F9E0;&#x1F9E0;</td>
+<td>&#x26A1;&#x26A1;</td>
+<td>&#x1F4B2;&#x1F4B2;&#x1F4B2;&#x1F4B2;</td>
+<td>Complex reasoning, system design, large refactors, multi-file changes</td>
+</tr>
+<tr>
+<td><strong>Claude Sonnet 4.6</strong></td>
+<td>Anthropic</td>
+<td>&#x1F9E0;&#x1F9E0;&#x1F9E0;&#x1F9E0;</td>
+<td>&#x26A1;&#x26A1;&#x26A1;&#x26A1;</td>
+<td>&#x1F4B2;&#x1F4B2;&#x1F4B2;</td>
+<td>General coding, chat, everyday edits — strong quality-to-cost balance</td>
+</tr>
+<tr>
+<td><strong>GPT-5.3 Codex</strong></td>
+<td>OpenAI</td>
+<td>&#x1F9E0;&#x1F9E0;&#x1F9E0;&#x1F9E0;&#x1F9E0;</td>
+<td>&#x26A1;&#x26A1;&#x26A1;</td>
+<td>&#x1F4B2;&#x1F4B2;&#x1F4B2;</td>
+<td>Agentic coding, multi-step reasoning, code generation</td>
+</tr>
+<tr>
+<td><strong>GPT-5.4</strong></td>
+<td>OpenAI</td>
+<td>&#x1F9E0;&#x1F9E0;&#x1F9E0;&#x1F9E0;&#x1F9E0;</td>
+<td>&#x26A1;&#x26A1;&#x26A1;</td>
+<td>&#x1F4B2;&#x1F4B2;&#x1F4B2;</td>
+<td>Advanced reasoning, long context (up to 1M tokens)</td>
+</tr>
+<tr>
+<td><strong>Gemini 3.1 Pro</strong></td>
+<td>Google</td>
+<td>&#x1F9E0;&#x1F9E0;&#x1F9E0;&#x1F9E0;</td>
+<td>&#x26A1;&#x26A1;&#x26A1;&#x26A1;</td>
+<td>&#x1F4B2;&#x1F4B2;</td>
+<td>Large context windows, long documents, multimodal input</td>
+</tr>
+<tr>
+<td><strong>Grok 4.20</strong></td>
+<td>xAI</td>
+<td>&#x1F9E0;&#x1F9E0;&#x1F9E0;&#x1F9E0;</td>
+<td>&#x26A1;&#x26A1;&#x26A1;&#x26A1;</td>
+<td>&#x1F4B2;&#x1F4B2;</td>
+<td>General coding, large context (200k+)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Model variations:</strong> Most models come in multiple variants you can select from the model picker:</p>
+<ul>
+<li><strong>Thinking mode</strong> — the model reasons step-by-step before answering (e.g., Claude Sonnet 4.6 with thinking). Higher quality but slower.</li>
+<li><strong>Fast mode</strong> — optimized for speed at higher cost (e.g., Claude Opus 4.6 Fast).</li>
+<li><strong>Max Mode</strong> — extends the context window up to 1M tokens for working with large codebases.</li>
+<li><strong>Reasoning effort</strong> — some OpenAI models let you choose low / high reasoning effort (e.g., <code>gpt-5.3-codex-high</code>).</li>
+<li><strong>Size variants</strong> — smaller/cheaper versions for simpler tasks (e.g., GPT-5.4 Mini, GPT-5.4 Nano).</li>
+</ul>
+<p>Models and versions update frequently. Check the model picker in Cursor for the latest options, or visit <a href="https://cursor.com/docs/models-and-pricing">cursor.com/docs/models-and-pricing</a>.</p>
+</ac:rich-text-body></ac:structured-macro>
+</ac:rich-text-body></ac:structured-macro>
+<hr/>
+<h1>5. Common Workflows</h1>
+<h2>5.1 At a glance</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Best in</th>
+<th>Example prompt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Create figures and diagrams</td>
+<td>App</td>
+<td><em>"Plot a bar chart of the top 10 genes by expression from @results.csv"</em></td>
+</tr>
+<tr>
+<td>Understand and modify a codebase</td>
+<td>App</td>
+<td><em>"Explain how @src/pipeline/ processes input data, then add error handling"</em></td>
+</tr>
+<tr>
+<td>Build a reproducible GitHub project</td>
+<td>App</td>
+<td><em>"Add a README, requirements.txt, and Dockerfile to make this project reproducible"</em></td>
+</tr>
+<tr>
+<td>Debug code</td>
+<td>App</td>
+<td><em>"This script throws a KeyError on line 42 — fix it and explain what went wrong"</em></td>
+</tr>
+<tr>
+<td>Image file batch conversion</td>
+<td>CLI</td>
+<td><em>"Convert all .tif files in /data/images/ to .png, preserving directory structure"</em></td>
+</tr>
+<tr>
+<td>Clean and reshape messy data</td>
+<td>CLI</td>
+<td><em>"Read data.csv, drop rows with missing values, pivot by sample ID, and save as clean_data.csv"</em></td>
+</tr>
+<tr>
+<td>Download and try new GitHub code</td>
+<td>CLI</td>
+<td><em>"Clone https://github.com/example/tool, install it, and run it on /data/sample.tif"</em></td>
+</tr>
+<tr>
+<td>File and folder organization QC</td>
+<td>CLI</td>
+<td><em>"Check every subject folder under /data/study/ has exactly 3 .nii.gz files and flag mismatches"</em></td>
+</tr>
+</tbody>
+</table>
+<h2>5.2 Real-world examples</h2>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0000-0000-000000000099" ac:name="info" ac:schema-version="1"><ac:rich-text-body>
+<p><strong>Rule of thumb:</strong> The more specific your prompt, the better the result. Tell Cursor <em>exactly</em> what you want — specify input files with <code>@</code> references, name the output format, describe the plot style, and state the analysis steps. A vague prompt like <em>&ldquo;analyze my data&rdquo;</em> will give generic results; a precise prompt like <em>&ldquo;load @results.csv, run a Kruskal&ndash;Wallis test on column X grouped by column Y, and save a boxplot as figure.png&rdquo;</em> gets you there in one shot.</p>
+</ac:rich-text-body></ac:structured-macro>
+<p>Click to expand each case for the full prompt and expected outcome.</p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0001-0000-000000000001" ac:name="panel" ac:schema-version="1"><ac:parameter ac:name="borderStyle">solid</ac:parameter><ac:parameter ac:name="borderColor">#00875A</ac:parameter><ac:parameter ac:name="titleBGColor">#E3FCEF</ac:parameter><ac:parameter ac:name="bgColor">#FFFFFF</ac:parameter><ac:parameter ac:name="title">&#x1F4DA; Literature review: deep learning on neuroblastoma H&amp;E images</ac:parameter><ac:rich-text-body>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0001-0001-000000000001" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">Show details</ac:parameter><ac:rich-text-body>
+<p><strong>Environment:</strong> App</p>
+<p><strong>Goal:</strong> Survey and categorize all papers from the past decade that apply deep learning to H&amp;E-stained neuroblastoma images.</p>
+<p><strong>Prompt:</strong></p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0001-0001-000000000002" ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[I want you to summarize and categorize all the papers published in the past ten years that use deep learning for analyzing H&E images of neuroblastoma. Create a proper PubMed query for this task, use the integrated browser to open pubmed.com Use this query to get a list of papers indexed there with their abstracts. Save the output as a TXT file on disk. Then, analyze the text data, summarize them as an Excel spreadsheet sorting, categorizing, and describing the main papers. Filter out the ones that are false positives.]]></ac:plain-text-body></ac:structured-macro>
+<p><strong>What Cursor did:</strong> Constructed a PubMed search query, opened the browser, scraped matching papers with abstracts into a .txt file, then parsed the results into a categorized Excel spreadsheet with false positives removed.</p>
+<p><strong>Output:</strong> <ac:link><ri:attachment ri:filename="neuroblastoma_DL_HE_literature_review.csv"/><ac:plain-text-link-body><![CDATA[neuroblastoma_DL_HE_literature_review.csv]]></ac:plain-text-link-body></ac:link></p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0001-0001-000000000003" ac:name="tip" ac:schema-version="1"><ac:rich-text-body>
+<p><strong>Tip:</strong> For complex multi-step tasks like this, use a high-reasoning model (e.g., Claude Opus 4.6 or GPT-5.3 Codex with thinking enabled). Alternatively, start with <strong>Plan mode</strong> to let the agent outline its approach first, review the plan, then switch to <strong>Act mode</strong> to execute.</p>
+</ac:rich-text-body></ac:structured-macro>
+</ac:rich-text-body></ac:structured-macro>
+</ac:rich-text-body></ac:structured-macro>
+<p>&nbsp;</p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0002-0000-000000000001" ac:name="panel" ac:schema-version="1"><ac:parameter ac:name="borderStyle">solid</ac:parameter><ac:parameter ac:name="borderColor">#00875A</ac:parameter><ac:parameter ac:name="titleBGColor">#E3FCEF</ac:parameter><ac:parameter ac:name="bgColor">#FFFFFF</ac:parameter><ac:parameter ac:name="title">&#x1F4C1; Batch reorganize and rename TIF files for OMERO import</ac:parameter><ac:rich-text-body>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0002-0001-000000000001" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">Show details</ac:parameter><ac:rich-text-body>
+<p><strong>Environment:</strong> CLI</p>
+<p><strong>Goal:</strong> Restructure a nested imaging folder into an OMERO-ready two-level layout, renaming each file to encode the age group.</p>
+<p><strong>Prompt:</strong></p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0002-0001-000000000002" ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[I have TIF files organized in a three-level folder structure under "/research/dept/dnb/core_operations/ImageAnalysisScratch/Schwarz/Jimin/20X Images": Condition (Control Mice, PS19 Mice) / Age (3 Months, 4 Months, etc.) / Sample ID / *.tif.
+Reorganize them into a two-level structure at [your destination path]: map "Control Mice" → "Control" and "PS19 Mice" → "PS19", flatten the Age and Sample ID levels, and rename each file by appending the age (compact, e.g. "3 Months" → "3Months") to the basename.
+Exclude anything under "Cellpose Images and ROIs".
+First show me a copy plan with file counts, then generate and run a shell script to do the copy.]]></ac:plain-text-body></ac:structured-macro>
+<p><strong>What Cursor did:</strong> Scanned the source tree, produced a copy plan with 255 files (105 Control, 150 PS19), generated a shell script with the rename logic, executed it, and auto-corrected path errors on the fly until all files were copied successfully.</p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0002-0001-000000000003" ac:name="tip" ac:schema-version="1"><ac:rich-text-body>
+<p><strong>Tip:</strong> The Auto model handles most file-operation tasks well. If it struggles with complex path logic or large file counts, switch to a high-reasoning model with thinking enabled. The agent will automatically retry and self-correct if the generated script hits errors during execution.</p>
+</ac:rich-text-body></ac:structured-macro>
+</ac:rich-text-body></ac:structured-macro>
+</ac:rich-text-body></ac:structured-macro>
+<p>&nbsp;</p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0003-0000-000000000001" ac:name="panel" ac:schema-version="1"><ac:parameter ac:name="borderStyle">solid</ac:parameter><ac:parameter ac:name="borderColor">#00875A</ac:parameter><ac:parameter ac:name="titleBGColor">#E3FCEF</ac:parameter><ac:parameter ac:name="bgColor">#FFFFFF</ac:parameter><ac:parameter ac:name="title">&#x1F4CA; Create a publication-ready statistical boxplot from a CSV</ac:parameter><ac:rich-text-body>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0003-0001-000000000001" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">Show details</ac:parameter><ac:rich-text-body>
+<p><strong>Environment:</strong> App</p>
+<p><strong>Goal:</strong> Generate a publication-ready boxplot comparing a metric between experiment and control groups, with statistical testing.</p>
+<p><strong>Prompt:</strong></p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0003-0001-000000000002" ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[Read the CSV file at @metric_summary_synthetic.csv which contains analysis results with columns: group and metric. Create a Python script that:
+- Loads the CSV and plots metric as a boxplot grouped by the "group" column (experiment vs Control)
+- Overlays jittered individual data points in gray
+- Uses teal (#66C2A5) for experiment and coral (#FC8D62) for Control
+- Runs a one-way ANOVA and Kruskal-Wallis test between groups
+- Displays both p-values in the plot title
+- Uses a clean publication-ready style (no top/right spines)
+- Saves the figure as boxplot.png]]></ac:plain-text-body></ac:structured-macro>
+<p><strong>What Cursor did:</strong> Created a Python script using pandas, matplotlib, and scipy. It loaded the CSV, split data by group, ran ANOVA and Kruskal&ndash;Wallis tests, and produced the boxplot below.</p>
+<p><strong>Output:</strong></p>
+<p><ac:image ac:width="600"><ri:attachment ri:filename="boxplot.png"/></ac:image></p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0003-0001-000000000003" ac:name="tip" ac:schema-version="1"><ac:rich-text-body>
+<p><strong>Tip:</strong> Use <code>@</code> references to point Cursor at the exact data file. Be explicit about plot aesthetics (colors, font sizes, style) and statistical tests you want — the more specific the prompt, the fewer iterations needed.</p>
+</ac:rich-text-body></ac:structured-macro>
+</ac:rich-text-body></ac:structured-macro>
+</ac:rich-text-body></ac:structured-macro>
+<p>&nbsp;</p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0004-0000-000000000001" ac:name="panel" ac:schema-version="1"><ac:parameter ac:name="borderStyle">solid</ac:parameter><ac:parameter ac:name="borderColor">#00875A</ac:parameter><ac:parameter ac:name="titleBGColor">#E3FCEF</ac:parameter><ac:parameter ac:name="bgColor">#FFFFFF</ac:parameter><ac:parameter ac:name="title">&#x1F9ED; Reverse-engineer an unfamiliar GitHub repo into a structured walkthrough</ac:parameter><ac:rich-text-body>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0004-0001-000000000001" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">Show details</ac:parameter><ac:rich-text-body>
+<p><strong>Environment:</strong> App</p>
+<p><strong>Goal:</strong> Quickly understand an unfamiliar GitHub repository &mdash; its purpose, architecture, data flow, and extension points &mdash; without reading every file yourself.</p>
+<p><strong>Prompt:</strong></p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0004-0001-000000000002" ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[Help me understand this repo: https://github.com/murphygroup/3DCellComposer
+
+Give me a concise but technical walkthrough:
+
+* What problem it solves and the overall pipeline
+* Key folders/files and main entry points
+* End-to-end data flow (input → processing → output)
+* Core models/algorithms and where they're implemented
+* How to run it (setup + example)
+* Where to modify if I want to plug in my own data/model
+
+Reference specific files/functions when useful.
+
+Do NOT print the explanation in chat. Instead, create a well-structured Markdown file (e.g., `repo_summary.md`) in the workspace containing the full explanation.]]></ac:plain-text-body></ac:structured-macro>
+<p><strong>What Cursor did:</strong> Cloned the repository, navigated the directory tree and key source files, then synthesized a structured Markdown walkthrough covering the pipeline architecture, module responsibilities, data flow, core algorithms (2D segmentation via DeepCell/Cellpose, Jaccard-based slice matching, orthogonal 3D fusion), setup instructions, and extension points &mdash; all written directly to a file instead of flooding the chat.</p>
+<p><strong>Output:</strong> <ac:link><ri:attachment ri:filename="repo_summary.md"/><ac:plain-text-link-body><![CDATA[repo_summary.md]]></ac:plain-text-link-body></ac:link></p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0005-0004-0001-000000000003" ac:name="tip" ac:schema-version="1"><ac:rich-text-body>
+<p><strong>Tip:</strong> Asking Cursor to write the output to a file (instead of printing it in chat) keeps the conversation clean and gives you a reusable artifact. You can then ask follow-up questions like <em>&ldquo;How would I swap Cellpose for my own segmentation model?&rdquo;</em> and Cursor will reference the repo context it already has.</p>
+</ac:rich-text-body></ac:structured-macro>
+</ac:rich-text-body></ac:structured-macro>
+</ac:rich-text-body></ac:structured-macro>
+<hr/>
+<h1>6. Troubleshooting &amp; Common Issues</h1>
+<p>Click any item below to expand the solution.</p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0006-0006-0006-000000000001" ac:name="panel" ac:schema-version="1"><ac:parameter ac:name="borderStyle">dashed</ac:parameter><ac:parameter ac:name="borderColor">#FF5630</ac:parameter><ac:parameter ac:name="titleBGColor">#FFEBE6</ac:parameter><ac:parameter ac:name="bgColor">#FAFAFA</ac:parameter><ac:rich-text-body>
+<ac:structured-macro ac:macro-id="17f98345-71f0-47d2-97f5-d27e8e321fbf" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">&#x1F5A5;&#xFE0F; Cursor won't start on Linux shared server</ac:parameter><ac:rich-text-body>
+<p><strong>Symptoms:</strong> Blank screen or crash on launch.</p>
+<p><strong>Solutions:</strong></p>
+<ul>
+<li>If you see GPU errors, try: <code>cursor --disable-gpu</code></li>
+<li>Ensure <code>libgtk-3</code> and <code>libnotify</code> are available on the server.</li>
+</ul>
+</ac:rich-text-body></ac:structured-macro>
+<hr/>
+<ac:structured-macro ac:macro-id="c094b335-4d4e-40ee-af50-cba4d8f2ae43" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">&#x1F6AB; "agent: command not found" after CLI install</ac:parameter><ac:rich-text-body>
+<p><strong>Cause:</strong> Shell PATH not updated.</p>
+<ac:structured-macro ac:macro-id="5408c1f3-4bce-4963-a8d5-eb5853964df2" ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">bash</ac:parameter><ac:plain-text-body><![CDATA[# Re-source your shell config
+source ~/.bashrc   # or source ~/.zshrc
+
+# If still missing, re-install
+curl https://cursor.com/install -fsS | bash]]></ac:plain-text-body></ac:structured-macro>
+</ac:rich-text-body></ac:structured-macro>
+<hr/>
+<ac:structured-macro ac:macro-id="a80fce9f-4a89-40e4-9a4e-66995b3ddb7c" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">&#x23F3; AI responses are slow or timing out</ac:parameter><ac:rich-text-body>
+<ul>
+<li>Check the model dropdown — larger models (e.g., Claude Opus 4.6) are slower but more capable.</li>
+<li>Reduce context: don't <code>@</code>-reference huge directories; be specific.</li>
+<li>Check <a href="https://status.cursor.com/">status.cursor.com</a> for service outages.</li>
+</ul>
+</ac:rich-text-body></ac:structured-macro>
+<hr/>
+<ac:structured-macro ac:macro-id="edcfeded-1bce-4309-865e-6ccd99e8ce1f" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">&#x1F512; Privacy / data concerns</ac:parameter><ac:rich-text-body>
+<p>Privacy Mode is enabled by default. With Privacy Mode on:</p>
+<ul>
+<li>Your code is <strong>not</strong> stored by any model provider.</li>
+<li>Your code is <strong>not</strong> used for training.</li>
+<li>Prompts are sent to the model for inference only and discarded.</li>
+</ul>
+<p>You can verify this under <em>Settings &gt; Team Settings &gt; Privacy</em>.</p>
+</ac:rich-text-body></ac:structured-macro>
+<hr/>
+<ac:structured-macro ac:macro-id="664e4f8a-0284-4855-9145-6bf97dbf1a3b" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">&#x21A9;&#xFE0F; Accepted a bad AI edit — how do I undo?</ac:parameter><ac:rich-text-body>
+<ul>
+<li>Press <code>Ctrl+Z</code> immediately to undo the last change, just like in any editor.</li>
+<li>If the agent made changes across multiple files, use <strong>Checkpoint Restore</strong> — click the clock icon at the top of the chat panel to revert all files to the state before the agent ran.</li>
+<li>If you already saved and closed, use <code>git diff</code> and <code>git checkout -- filename</code> to restore individual files (works only if your project is in a Git repo).</li>
+</ul>
+</ac:rich-text-body></ac:structured-macro>
+<hr/>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0006-0006-0006-000000000002" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">&#x1F914; AI gives wrong or irrelevant answers</ac:parameter><ac:rich-text-body>
+<p><strong>Cause:</strong> The model doesn't have enough context about your code.</p>
+<p><strong>Solutions:</strong></p>
+<ul>
+<li>Use <code>@</code> references to pin specific files or folders (e.g., <code>@analyze.py</code>, <code>@src/pipeline/</code>) so the model reads them.</li>
+<li>Be specific in your prompt — instead of <em>"fix this"</em>, say <em>"fix the KeyError in the process_data function in @utils.py"</em>.</li>
+<li>Start a new chat if the conversation has gotten long — older context can confuse the model.</li>
+</ul>
+</ac:rich-text-body></ac:structured-macro>
+</ac:rich-text-body></ac:structured-macro>
+<hr/>
+<h1>7. Useful Links</h1>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cursor official docs</td>
+<td><a href="https://cursor.com/docs">cursor.com/docs</a></td>
+</tr>
+<tr>
+<td>Cursor CLI reference (St. Jude wiki)</td>
+<td><ac:link><ri:page ri:content-title="Cursor CLI - Authentication and Usage" ri:space-key="RC"></ri:page></ac:link></td>
+</tr>
+<tr>
+<td>Cursor changelog</td>
+<td><a href="https://www.cursor.com/changelog">cursor.com/changelog</a></td>
+</tr>
+<tr>
+<td>Cursor forum (community)</td>
+<td><a href="https://forum.cursor.com/">forum.cursor.com</a></td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<ac:structured-macro ac:macro-id="e9ac3e34-8d00-46a1-8aae-e93954af248d" ac:name="info" ac:schema-version="1"><ac:rich-text-body>
+<p><strong>Questions?</strong> Comment below or reach out to <a href="mailto:Abbas.Shirinifard@STJUDE.ORG">Abbas Shirinifard</a> or <a href="mailto:Haoran.Chen@stjude.org">Haoran Chen</a>.</p>
+</ac:rich-text-body></ac:structured-macro>

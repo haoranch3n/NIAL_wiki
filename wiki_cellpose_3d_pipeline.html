@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cellpose 3D Pipeline — OMERO User Guide</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 20px; line-height: 1.6; color: #172b4d; }
+  h1 { font-size: 24px; }
+  h2 { font-size: 20px; margin-top: 32px; }
+  h3 { font-size: 16px; margin-top: 24px; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th, td { border: 1px solid #dfe1e6; padding: 8px 12px; text-align: left; vertical-align: top; }
+  th { background-color: #f4f5f7; font-weight: 600; }
+  code { background-color: #f4f5f7; padding: 2px 4px; border-radius: 3px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 0.9em; }
+  pre { background-color: #f4f5f7; padding: 16px; border-radius: 3px; overflow-x: auto; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 0.9em; line-height: 1.4; }
+  hr { border: none; border-top: 1px solid #dfe1e6; margin: 32px 0; }
+  .info-panel { background-color: #deebff; border-left: 4px solid #0052cc; padding: 16px; margin: 16px 0; border-radius: 3px; }
+  .info-panel .panel-title { font-weight: 700; margin-bottom: 8px; color: #0052cc; }
+  .note-panel { background-color: #fffae6; border-left: 4px solid #ff991f; padding: 16px; margin: 16px 0; border-radius: 3px; }
+  ul, ol { margin: 8px 0; padding-left: 24px; }
+  li { margin: 4px 0; }
+</style>
+</head>
+<body>
+
+<h2>Overview</h2>
+
+<p>The Cellpose 3D Pipeline performs automated multi-scale cell segmentation and 3D reconstruction on fluorescence microscopy images directly from OMERO. It uses the <a href="https://www.cellpose.org/">Cellpose</a> deep learning model to detect cells at multiple sizes, then reconstructs them into 3D objects using <a href="https://github.com/murphygroup/3DCellComposer">3DCellComposer</a> — a versatile method for building consistent 3D cell segmentations from 2D slice-by-slice results. Finally, it quantifies per-cell fluorescence intensity for each channel.</p>
+
+<table style="border-left: 4px solid #0052cc; background-color: #deebff; border-collapse: collapse;">
+<tr>
+<td style="padding: 16px; border: none;">
+<strong style="color: #0052cc;">At a Glance</strong><br><br>
+<strong>Supported input formats:</strong> ND2, TIF, OME-TIFF<br>
+<strong>Channels used:</strong> DAPI (nuclear) + a secondary cytoplasmic channel (TH by default)<br>
+<strong>Output:</strong> A CSV file with per-cell statistics (attached to each source image in OMERO), plus an analysis visualization image imported into a new OMERO dataset.
+</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>What the Pipeline Does</h2>
+
+<p>The pipeline runs four major stages automatically. You do not need to run them individually — the system handles everything after you submit the job.</p>
+
+<table>
+<tr><th>Stage</th><th>Name</th><th>Description</th></tr>
+<tr><td>1</td><td>Preprocessing</td><td>Extracts individual 2D planes from the multi-dimensional image (one per Z-slice and channel). If a <code>.roi</code> file (ImageJ format) with the same name as the image exists, pixels outside the ROI polygon are automatically zeroed before extraction.</td></tr>
+<tr><td>2</td><td>2D Cell Segmentation</td><td>Runs <a href="https://www.cellpose.org/">Cellpose</a> at multiple cell diameters to detect cells of varying sizes on each 2D plane (GPU-accelerated). Multi-scale masks are then combined, small objects filtered, and touching cells split.</td></tr>
+<tr><td>3</td><td>3D Cell Reconstruction</td><td>Stacks 2D masks into 3D volumes and matches cell labels across Z-slices using <a href="https://github.com/murphygroup/3DCellComposer">3DCellComposer</a> to create consistent 3D cell IDs. Cells appearing in only one Z-plane are removed.</td></tr>
+<tr><td>4</td><td>Quantification</td><td>Computes mean fluorescence intensity per channel for every segmented 3D cell and writes a CSV file with per-cell statistics.</td></tr>
+</table>
+
+<hr>
+
+<h2>How to Run the Pipeline</h2>
+
+<h3>Step 1: Place Your Data</h3>
+
+<p>Your images must be accessible on the shared filesystem at the following path:</p>
+
+<pre>/media/core/core_operations/OmeroData/{lab}/{user_name}/{project_name}/{dataset_name}/</pre>
+
+<p>Place your microscopy files (ND2, TIF, or OME-TIFF) into the appropriate dataset folder. If you are using ROI cropping, place the corresponding <code>.roi</code> files in the same folder (see <strong>ROI Cropping</strong> section below).</p>
+
+<h3>Step 2: Open OMERO.web and Select Images</h3>
+
+<p>Navigate to <a href="https://omeroplus.stjude.org">https://omeroplus.stjude.org</a> and log in with your organizational credentials. Then select the data to process:</p>
+<ul>
+<li><strong>Individual images</strong> — select one or more images in the left panel</li>
+<li><strong>Entire datasets</strong> — select one or more datasets (all images inside will be processed)</li>
+</ul>
+
+<h3>Step 3: Launch the Script</h3>
+
+<ol>
+<li>Click the <strong>Scripts</strong> icon (gear/wrench) in the top toolbar.</li>
+<li>Navigate to <strong>Processing &amp; Analysis</strong> → <strong>Run Cellpose 3D</strong>.</li>
+<li>Configure the parameters (see table below).</li>
+<li>Click <strong>Run Script</strong>.</li>
+</ol>
+
+<h3>Step 4: Monitor Progress</h3>
+
+<p>After submission, click the <strong>thumbnail</strong> icon in the top-right area of OMERO.web and select <strong>Job Monitor</strong> to track your pipeline. In the Job Monitor, set the job type filter to <strong>HPC Jobs</strong>. The tracker shows progress for each phase:</p>
+
+<table>
+<tr><th>Phase</th><th>Compute</th><th>Typical Duration</th></tr>
+<tr><td>Segmentation</td><td>GPU</td><td>~1–2 hours</td></tr>
+<tr><td>Post-processing</td><td>CPU</td><td>~30 minutes</td></tr>
+<tr><td>Attach Results</td><td>CPU</td><td>&lt; 5 minutes</td></tr>
+<tr><td>OMERO Import</td><td>CPU</td><td>&lt; 5 minutes</td></tr>
+</table>
+
+<p><em>Actual runtimes depend on image size, number of diameters, and SLURM cluster queue availability.</em></p>
+
+<h3>Step 5: View Results</h3>
+
+<p>When the pipeline completes:</p>
+<ul>
+<li><strong>CSV file</strong> — attached to the original source image. Select the image, then on the right side of the screen expand the <strong>Attachments</strong> tab. The <code>_cell_intensity_stats.csv</code> file will be listed there and can be downloaded.</li>
+<li><strong>Analysis image</strong> — imported into a new dataset named <code>{Dataset}_cellpose3D_{timestamp}</code> under the same project. This OME-TIFF shows the raw channels overlaid with segmentation labels. Double-click the image to open it in the OMERO viewer for interactive inspection.</li>
+</ul>
+
+<hr>
+
+<h2>Parameters</h2>
+
+<table>
+<tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+<tr><td>Data_Type</td><td>Image</td><td>Process individual <strong>Images</strong> or all images in <strong>Datasets</strong></td></tr>
+<tr><td>IDs</td><td><em>(required)</em></td><td>Select the images or datasets to process</td></tr>
+<tr><td>Diameter_Start</td><td>50</td><td>Minimum expected cell diameter in pixels</td></tr>
+<tr><td>Diameter_End</td><td>100</td><td>Maximum expected cell diameter in pixels</td></tr>
+<tr><td>Diameter_Step</td><td>5</td><td>Increment between diameters (smaller = more scales, longer runtime)</td></tr>
+<tr><td>Model</td><td>custom</td><td><strong>custom</strong> = trained specifically for DAPI/TH mouse brain tissue; <strong>cyto2</strong> = general-purpose Cellpose model</td></tr>
+<tr><td>Min_Cell_Diameter</td><td>40</td><td>Cells smaller than this diameter (in pixels) are filtered out</td></tr>
+<tr><td>Split_Threshold</td><td>0.8</td><td>Controls how aggressively touching cells are separated (0.0–1.0; higher = less splitting)</td></tr>
+<tr><td>JI_Threshold</td><td>0.3</td><td>Jaccard Index threshold for matching cells across Z-slices (higher = stricter matching)</td></tr>
+<tr><td>Filter_Single_Slice</td><td>True</td><td>Remove cells that appear in only one Z-plane (recommended for 3D analysis)</td></tr>
+</table>
+
+<h3>Choosing Diameter Range</h3>
+
+<p>The diameter range should bracket the expected cell sizes in your images:</p>
+<ul>
+<li><strong>Too narrow</strong>: May miss cells outside the range</li>
+<li><strong>Too wide</strong>: Increases runtime without improving results</li>
+<li><strong>Typical starting point</strong>: 50–100 with step 5 (11 diameters)</li>
+<li>For <strong>smaller cells</strong> (e.g., 20x magnification): try 30–70</li>
+<li>For <strong>larger cells</strong> (e.g., 10x magnification): try 70–150</li>
+</ul>
+
+<hr>
+
+<h2>ROI Cropping (Optional)</h2>
+
+<p>If you only want to analyze a specific region of your image, you can draw an ROI in ImageJ/FIJI and save it as a <code>.roi</code> file:</p>
+
+<ol>
+<li>Open your image in FIJI/ImageJ.</li>
+<li>Draw a freehand or polygon selection around the region of interest.</li>
+<li>Go to <strong>File → Save As → Selection...</strong> and save it with the <strong>same name</strong> as the image file but with a <code>.roi</code> extension.
+  <ul><li>Example: if your image is <code>sample.nd2</code>, save the ROI as <code>sample.roi</code> in the same folder.</li></ul>
+</li>
+<li>The pipeline will automatically detect the <code>.roi</code> file and zero out all pixels outside the ROI before processing.</li>
+</ol>
+
+<table style="border-left: 4px solid #ff991f; background-color: #fffae6; border-collapse: collapse;">
+<tr>
+<td style="padding: 16px; border: none;">
+<strong style="color: #ff991f;">Note:</strong> If no <code>.roi</code> file is found, the pipeline processes the full image. No action is needed — ROI cropping is entirely optional.
+</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>Output Files</h2>
+
+<h3>CSV: Cell Intensity Statistics</h3>
+
+<p>The CSV file (<code>{image_name}_cell_intensity_stats.csv</code>) contains one row per segmented cell with the following columns:</p>
+
+<table>
+<tr><th>Column</th><th>Description</th></tr>
+<tr><td>cell_id</td><td>Unique integer label for the cell</td></tr>
+<tr><td>centroid_x</td><td>X coordinate of the cell centroid (pixels)</td></tr>
+<tr><td>centroid_y</td><td>Y coordinate of the cell centroid (pixels)</td></tr>
+<tr><td>volume_voxels</td><td>Number of voxels (3D pixels) in the cell</td></tr>
+<tr><td>mean_DAPI</td><td>Mean DAPI fluorescence intensity</td></tr>
+<tr><td>mean_TH</td><td>Mean TH fluorescence intensity</td></tr>
+<tr><td>mean_AT8</td><td>Mean AT8 fluorescence intensity</td></tr>
+</table>
+
+<p><em>Note: Channel columns depend on the channels present in your image.</em></p>
+
+<h3>Analysis Image</h3>
+
+<p>An OME-TIFF image (<code>{image_name}_analysis.ome.tif</code>) is imported into OMERO showing the raw fluorescence channels combined with the segmentation labels and per-cell mean intensity overlays. This image can be viewed in OMERO.web or downloaded for further inspection.</p>
+
+<hr>
+
+<h2>Output Directory Structure</h2>
+
+<p>Pipeline outputs are written next to the source dataset on the shared filesystem:</p>
+
+<pre>Project/
+├── Dataset/                              (original data — untouched)
+│   ├── image1.tif
+│   └── image2.nd2
+│
+└── Dataset_cellpose3D_YYYYMMDD_HHMM/     (pipeline output)
+    ├── image1_cell_intensity_stats.csv    (attached to OMERO)
+    ├── image1_analysis.ome.tif           (imported to OMERO)
+    ├── image1_indexed.tif                (3D labeled mask)
+    ├── image1_byproducts/                (intermediate files)
+    │   ├── 0_roi_cropped/                (ROI-masked image, if applicable)
+    │   ├── 1_planes/                     (extracted 2D planes)
+    │   ├── 2_segmentation/               (Cellpose masks at each diameter)
+    │   ├── 3_masks/                      (combined multi-scale masks)
+    │   ├── 4_stacked/                    (3D volumes)
+    │   └── 5_labels/                     (final 3D labels)
+    │
+    ├── image2_cell_intensity_stats.csv
+    ├── image2_analysis.ome.tif
+    └── ...</pre>
+
+<p>Byproduct folders are automatically cleaned up after successful processing.</p>
+
+<hr>
+
+<h2>Troubleshooting</h2>
+
+<h3>Pipeline shows "Failed" in OMERO Jobs panel</h3>
+<ul>
+<li>Check the SLURM logs on the shared filesystem. Logs are in the SCRATCH directory under <code>cellpose3d_{timestamp}/logs_*/</code>.</li>
+<li>Common causes: input image missing DAPI channel, file permissions, disk space.</li>
+</ul>
+
+<h3>No CSV attached to my image</h3>
+<ul>
+<li>Verify the pipeline completed all phases (check the Jobs panel).</li>
+<li>The CSV is only attached after the final "Attach Results" phase succeeds.</li>
+<li>If the image was in a group you don't own, the pipeline account may need write permissions.</li>
+</ul>
+
+<h3>Segmentation quality is poor</h3>
+<ul>
+<li><strong>Too few cells detected</strong>: Try a wider diameter range or lower <code>Min_Cell_Diameter</code>.</li>
+<li><strong>Too many false detections</strong>: Increase <code>Min_Cell_Diameter</code> or use a narrower diameter range.</li>
+<li><strong>Cells not separated</strong>: Lower the <code>Split_Threshold</code> (e.g., 0.6).</li>
+<li><strong>Inconsistent 3D labels</strong>: Lower the <code>JI_Threshold</code> (e.g., 0.2) to allow more matches across Z-slices.</li>
+</ul>
+
+<h3>Pipeline is very slow</h3>
+<ul>
+<li>Reduce the diameter range (fewer diameters = faster).</li>
+<li>Increase <code>Diameter_Step</code> (e.g., 10 instead of 5).</li>
+<li>Processing time scales linearly with the number of diameters and the number of Z-slices.</li>
+</ul>
+
+<hr>
+
+<h2>FAQ</h2>
+
+<p><strong>Q: What channels does the pipeline use?</strong><br>
+A: The pipeline uses DAPI as the nuclear channel and TH as the secondary cytoplasmic channel. These are currently configured by the system administrator. Contact the Image Analysis Core if you need to use a different channel (e.g., AT8).</p>
+
+<p><strong>Q: Can I process ND2 files directly?</strong><br>
+A: Yes. The pipeline accepts ND2, TIF, and OME-TIFF files. No conversion is needed before submitting.</p>
+
+<p><strong>Q: What happens if my image has no matching ROI file?</strong><br>
+A: The pipeline processes the full image. ROI cropping is entirely optional.</p>
+
+<p><strong>Q: Can I re-run the pipeline on the same images?</strong><br>
+A: Yes. Each run creates a new output dataset with a unique timestamp. Previous results are not overwritten.</p>
+
+<p><strong>Q: Who do I contact for help?</strong><br>
+A: Contact the Image Analysis Core team (Haoran Chen, Jorge Gutierrez).</p>
+
+<hr>
+
+<h2>Technical Details</h2>
+
+<table>
+<tr><th>Component</th><th>Details</th></tr>
+<tr><td>Segmentation model</td><td>Cellpose 3.x (custom trained or cyto2)</td></tr>
+<tr><td>GPU acceleration</td><td>CUDA 12.4, PyTorch</td></tr>
+<tr><td>Container</td><td>Singularity/Apptainer</td></tr>
+<tr><td>Job scheduler</td><td>SLURM</td></tr>
+<tr><td>Compute resources</td><td>GPU job: 16 CPU, 64 GB RAM, 1 GPU; CPU job: 32 CPU, 128 GB RAM</td></tr>
+<tr><td>OMERO integration</td><td>OMERO.scripts API + omero-py</td></tr>
+</table>
+
+</body>
+</html>
