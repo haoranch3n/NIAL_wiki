@@ -383,7 +383,39 @@ Do NOT print the explanation in chat. Instead, create a well-structured Markdown
 </ac:rich-text-body></ac:structured-macro>
 </ac:rich-text-body></ac:structured-macro>
 <hr/>
-<h1>6. Troubleshooting &amp; Common Issues</h1>
+<h1>6. Saving Your Work with Git &amp; GitHub</h1>
+<p>Git is a version control system that tracks every change you make &mdash; so you can undo mistakes and collaborate with others. GitHub is the online platform where your project is stored and shared. The good news: you don't need to learn Git commands &mdash; just ask Cursor in plain English.</p>
+<h2>Getting connected</h2>
+<ol>
+<li>If you don't have one yet, create a free account at <a href="https://github.com/">github.com</a>.</li>
+<li>Open Cursor and ask it to help you set up GitHub:</li>
+</ol>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0006-0001-0000-000000000010" ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[Install the GitHub CLI and log me in to GitHub.]]></ac:plain-text-body></ac:structured-macro>
+<p>The agent will install <code>gh</code>, run <code>gh auth login</code>, and walk you through the browser-based login. Once done, you can push code and create pull requests directly from Cursor.</p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0006-0001-0000-000000000011" ac:name="info" ac:schema-version="1"><ac:rich-text-body>
+<p><strong>St.&nbsp;Jude Git &amp; GitHub resources</strong></p>
+<ul>
+<li><strong>St.&nbsp;Jude GitHub</strong> &ndash; <a href="https://github.com/stjude">github.com/stjude</a>. To request access to the St.&nbsp;Jude GitHub organization, submit a request through <strong>MyAccess</strong> (search for &ldquo;GitHub&rdquo;). See the <a href="https://stjude.service-now.com/sp?id=kb_article_view&amp;sysparm_article=KB0012136">ServiceNow KB article</a> for step-by-step instructions.</li>
+<li><strong>St.&nbsp;Jude Git</strong> (internal) &ndash; <a href="https://git.stjude.org">git.stjude.org</a>. Access can be requested by submitting a <a href="https://stjude.service-now.com/sp?id=sc_cat_item&amp;sys_id=bb8437fd1b026c109057f2ff034bcb07">Research System General Request</a> in ServiceNow.</li>
+<li>For more details, see the <a href="https://wiki.stjude.org/pages/viewpage.action?pageId=37520476">RIS GitHub Guide</a> on the St.&nbsp;Jude wiki.</li>
+</ul>
+</ac:rich-text-body></ac:structured-macro>
+<h2>What Cursor can do for you</h2>
+<ul>
+<li>Save a snapshot of your work (<strong>commit</strong>) with an auto-generated description</li>
+<li>Upload your changes to GitHub (<strong>push</strong>)</li>
+<li>Create a <strong>pull request</strong> so teammates can review your work</li>
+<li>Show what changed since your last save</li>
+<li>Undo recent changes or restore an earlier version</li>
+</ul>
+<p>Just describe what you want in the chat or CLI:</p>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0006-0001-0000-000000000001" ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[Commit all my changes with a descriptive message and push to GitHub.]]></ac:plain-text-body></ac:structured-macro>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0006-0001-0000-000000000002" ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[Create a pull request for this branch summarizing what I changed.]]></ac:plain-text-body></ac:structured-macro>
+<ac:structured-macro ac:macro-id="a1b2c3d4-0006-0001-0000-000000000003" ac:name="tip" ac:schema-version="1"><ac:rich-text-body>
+<p>You can type <code>@git</code> in your prompt to give Cursor extra context about your recent changes, branches, or commit history &mdash; this helps it give more accurate answers.</p>
+</ac:rich-text-body></ac:structured-macro>
+<hr/>
+<h1>7. Troubleshooting &amp; Common Issues</h1>
 <p>Click any item below to expand the solution.</p>
 <ac:structured-macro ac:macro-id="a1b2c3d4-0006-0006-0006-000000000001" ac:name="panel" ac:schema-version="1"><ac:parameter ac:name="borderStyle">dashed</ac:parameter><ac:parameter ac:name="borderColor">#FF5630</ac:parameter><ac:parameter ac:name="titleBGColor">#FFEBE6</ac:parameter><ac:parameter ac:name="bgColor">#FAFAFA</ac:parameter><ac:rich-text-body>
 <ac:structured-macro ac:macro-id="17f98345-71f0-47d2-97f5-d27e8e321fbf" ac:name="expand" ac:schema-version="1"><ac:parameter ac:name="title">&#x1F5A5;&#xFE0F; Cursor won't start on Linux shared server</ac:parameter><ac:rich-text-body>
@@ -441,7 +473,7 @@ curl https://cursor.com/install -fsS | bash]]></ac:plain-text-body></ac:structur
 </ac:rich-text-body></ac:structured-macro>
 </ac:rich-text-body></ac:structured-macro>
 <hr/>
-<h1>7. Useful Links</h1>
+<h1>8. Useful Links</h1>
 <table>
 <thead>
 <tr>
